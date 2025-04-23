@@ -29,12 +29,14 @@ const gameboard = (function() {
 function checkWin() {
   for (let i = 0; i < gameboard.row.length; i++) {
     for (let j = 0; j < gameboard.row[i].length; j++) {
-      console.log(gameboard.row[0][2]);
+      if (gameboard.row[0][2] === "0" && gameboard.row[1][2] === "0" && gameboard.row[2][2] === "0") {
+        console.log("Ahoy!");
+      }
     }
   }
 }
 
-gameboard.setTopRight("X");
+gameboard.setTopRight("0");
 gameboard.setMidRight("0");
 gameboard.setLowRight("0");
 gameboard.printBoard();
