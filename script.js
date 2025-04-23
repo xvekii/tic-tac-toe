@@ -26,7 +26,16 @@ const gameboard = (function() {
   };
 })();
 
-gameboard.setTopRight("0");
+function checkWin() {
+  for (let i = 0; i < gameboard.row.length; i++) {
+    for (let j = 0; j < gameboard.row[i].length; j++) {
+      console.log(gameboard.row[0][2]);
+    }
+  }
+}
+
+gameboard.setTopRight("X");
 gameboard.setMidRight("0");
 gameboard.setLowRight("0");
 gameboard.printBoard();
+checkWin();
