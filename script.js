@@ -26,18 +26,48 @@ const gameboard = (function() {
   };
 })();
 
-function checkWin() {
-  for (let i = 0; i < gameboard.row.length; i++) {
-    for (let j = 0; j < gameboard.row[i].length; j++) {
-      if (gameboard.row[0][2] === "0" && gameboard.row[1][2] === "0" && gameboard.row[2][2] === "0") {
-        console.log("Ahoy!");
-      }
+function checkWin(player) {
+  const gb = gameboard.row;
+  const logScore = () => {
+    console.log(`${player} wins!`);
+    return true;
+  };
+  
+  const checkDraw = () => {
+    return gb.flat().every(cell => cell !== "");
+  };
+
+  const logDraw = () => {
+    console.log("It's a draw!");
+    return true;
+  }
+
+  if (gb[0][0] === player && gb[1][0] === player && gb[2][0] === player) {
+    return logScore();
+  } else if (gb[0][1] === player && gb[1][1] === player && gb[2][1] === player) {
+    return logScore();
+  } else if (gb[0][2] === player && gb[1][2] === player && gb[2][2] === player) {
+    return logScore();
+  } else if (gb[0][0] === player && gb[0][1] === player && gb[0][2] === player) {
+    return logScore();
+  } else if (gb[1][0] === player && gb[1][1] === player && gb[1][2] === player) {
+    return logScore();
+  } else if (gb[2][0] === player && gb[2][1] === player && gb[2][2] === player) {
+    return logScore();
+  } else if (gb[0][2] === player && gb[1][1] === player && gb[2][0] === player) {
+    return logScore();
+  } else if (gb[0][0] === player && gb[1][1] === player && gb[2][2] === player) {
+    return logScore();
+  } else {
+    if (checkDraw()) {
+      return logDraw();
     }
+    return false;
   }
 }
 
-gameboard.setTopRight("0");
-gameboard.setMidRight("0");
-gameboard.setLowRight("0");
+gameboard.setTopMid("x");
+gameboard.setMidMid("x");
+gameboard.setLowMid("x");
 gameboard.printBoard();
-checkWin();
+checkWin("x");
