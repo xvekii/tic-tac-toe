@@ -30,7 +30,7 @@ const gameboard = (function() {
 
 
 function createGame() {
-
+  let markSelector = 1;
   function checkWin(player) {
     const gb = gameboard.row;
     const logScore = () => {
@@ -70,28 +70,42 @@ function createGame() {
       return false;
     }
   }
-  return { checkWin };
+  return { checkWin, markSelector };
 }
 
 container.addEventListener("click", function(e) {
+  const x = "x";
+  const o = "o";
   let target = e.target;
   if (!target.classList.contains("field")) return;
-  const newDiv = document.createElement("div");
-  newDiv.classList.add("x");
-  target.appendChild(newDiv);
-  console.log("YEAH");
+  let targetSplit = target.classList[0].split("-");
+  let targetCapitalized = "set" +
+                          targetSplit[0].charAt(0).toUpperCase() + targetSplit[0].slice(1) + 
+                          targetSplit[1].charAt(0).toUpperCase() + targetSplit[1].slice(1);
+  console.log(targetCapitalized);
+
+  if (typeof gameboard[targetCapitalized] === "function") {
+    if (game.markSelector % 2 === 1) {
+      gameboard[targetCapitalized](x);
+      game.markSelector++;
+      drawMark(x);
+    } else if (game.markSelector % 2 === 0) {
+      gameboard[targetCapitalized](o);
+      game.markSelector++;
+      drawMark(o);
+    }
+  } else {
+    console.error(`Method ${targetCapitalized} does not exist on gameboard.`);
+  }
+  
+  function drawMark(mark) {
+    const newDiv = document.createElement("div");
+    newDiv.classList.add(mark);
+    target.appendChild(newDiv);
+    gameboard.printBoard();
+    game.checkWin(mark);
+  } 
+  
 });
 
-// gameboard.setTopMid("x");
-// gameboard.setMidMid("x");
-// // gameboard.setLowMid("o");
-// gameboard.setTopLeft("x");
-// // gameboard.setMidLeft("o");
-// // gameboard.setLowLeft("o");
-// gameboard.setTopRight("o");
-// gameboard.setMidRight("o");
-// gameboard.setLowRight("o");
-// gameboard.printBoard();
-
 const game = createGame();
-game.checkWin("o");
