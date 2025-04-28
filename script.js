@@ -28,44 +28,49 @@ const gameboard = (function() {
   };
 })();
 
-function checkWin(player) {
-  const gb = gameboard.row;
-  const logScore = () => {
-    console.log(`${player} wins!`);
-    return true;
-  };
+
+function createGame() {
+
+  function checkWin(player) {
+    const gb = gameboard.row;
+    const logScore = () => {
+      console.log(`${player} wins!`);
+      return true;
+    };
+    
+    const checkDraw = () => {
+      return gb.flat().every(cell => cell !== "");
+    };
   
-  const checkDraw = () => {
-    return gb.flat().every(cell => cell !== "");
-  };
-
-  const logDraw = () => {
-    console.log("It's a draw!");
-    return true;
-  }
-
-  if (gb[0][0] === player && gb[1][0] === player && gb[2][0] === player) {
-    return logScore();
-  } else if (gb[0][1] === player && gb[1][1] === player && gb[2][1] === player) {
-    return logScore();
-  } else if (gb[0][2] === player && gb[1][2] === player && gb[2][2] === player) {
-    return logScore();
-  } else if (gb[0][0] === player && gb[0][1] === player && gb[0][2] === player) {
-    return logScore();
-  } else if (gb[1][0] === player && gb[1][1] === player && gb[1][2] === player) {
-    return logScore();
-  } else if (gb[2][0] === player && gb[2][1] === player && gb[2][2] === player) {
-    return logScore();
-  } else if (gb[0][2] === player && gb[1][1] === player && gb[2][0] === player) {
-    return logScore();
-  } else if (gb[0][0] === player && gb[1][1] === player && gb[2][2] === player) {
-    return logScore();
-  } else {
-    if (checkDraw()) {
-      return logDraw();
+    const logDraw = () => {
+      console.log("It's a draw!");
+      return true;
     }
-    return false;
+  
+    if (gb[0][0] === player && gb[1][0] === player && gb[2][0] === player) {
+      return logScore();
+    } else if (gb[0][1] === player && gb[1][1] === player && gb[2][1] === player) {
+      return logScore();
+    } else if (gb[0][2] === player && gb[1][2] === player && gb[2][2] === player) {
+      return logScore();
+    } else if (gb[0][0] === player && gb[0][1] === player && gb[0][2] === player) {
+      return logScore();
+    } else if (gb[1][0] === player && gb[1][1] === player && gb[1][2] === player) {
+      return logScore();
+    } else if (gb[2][0] === player && gb[2][1] === player && gb[2][2] === player) {
+      return logScore();
+    } else if (gb[0][2] === player && gb[1][1] === player && gb[2][0] === player) {
+      return logScore();
+    } else if (gb[0][0] === player && gb[1][1] === player && gb[2][2] === player) {
+      return logScore();
+    } else {
+      if (checkDraw()) {
+        return logDraw();
+      }
+      return false;
+    }
   }
+  return { checkWin };
 }
 
 container.addEventListener("click", function(e) {
@@ -77,8 +82,16 @@ container.addEventListener("click", function(e) {
   console.log("YEAH");
 });
 
-gameboard.setTopMid("x");
-gameboard.setMidMid("x");
-gameboard.setLowMid("x");
-gameboard.printBoard();
-checkWin("x");
+// gameboard.setTopMid("x");
+// gameboard.setMidMid("x");
+// // gameboard.setLowMid("o");
+// gameboard.setTopLeft("x");
+// // gameboard.setMidLeft("o");
+// // gameboard.setLowLeft("o");
+// gameboard.setTopRight("o");
+// gameboard.setMidRight("o");
+// gameboard.setLowRight("o");
+// gameboard.printBoard();
+
+const game = createGame();
+game.checkWin("o");
