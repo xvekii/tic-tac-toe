@@ -85,3 +85,8 @@ body {
 .x::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
+
+.inert {
+  pointer-events: none;
+  opacity: 0.5;
+}
