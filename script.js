@@ -1,3 +1,5 @@
+const container = document.querySelector(".fields-container");
+
 const gameboard = (function() {
   const row = [
     ['', '', ''],
@@ -65,6 +67,15 @@ function checkWin(player) {
     return false;
   }
 }
+
+container.addEventListener("click", function(e) {
+  let target = e.target;
+  if (!target.classList.contains("field")) return;
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("x");
+  target.appendChild(newDiv);
+  console.log("YEAH");
+});
 
 gameboard.setTopMid("x");
 gameboard.setMidMid("x");
