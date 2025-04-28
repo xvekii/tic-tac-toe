@@ -1,5 +1,14 @@
 const container = document.querySelector(".fields-container");
 
+const v1 = document.querySelectorAll(".top-left, .mid-left, .low-left");
+const v2 = document.querySelectorAll(".top-mid, .mid-mid, .low-mid");
+const v3 = document.querySelectorAll(".top-right, .mid-right, .low-right");
+const h1 = document.querySelectorAll(".top-left, .top-mid, .top-right");
+const h2 = document.querySelectorAll(".mid-left, .mid-mid, .mid-right");
+const h3 = document.querySelectorAll(".low-left, .low-mid, .low-right");
+const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
+const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
+
 const gameboard = (function() {
   const row = [
     ['', '', ''],
@@ -49,22 +58,40 @@ function createGame() {
       container.classList.add("inert");
       return true;
     }
+
+    const markWinLeftVert = () => v1.forEach(e => e.classList.add("win"));
+    const markWinMidVert = () => v2.forEach(e => e.classList.add("win"));
+    const markWinRightVert = () => v3.forEach(e => e.classList.add("win"));
+    const markWinTopHor = () => h1.forEach(e => e.classList.add("win"));
+    const markWinMidHor = () => h2.forEach(e => e.classList.add("win"));
+    const markWinLowHor = () => h3.forEach(e => e.classList.add("win"));
+    const markWinDiagTL2LR = () => d1.forEach(e => e.classList.add("win"));
+    const markWinDiagTR2LL = () => d2.forEach(e => e.classList.add("win"));
+    
   
     if (gb[0][0] === player && gb[1][0] === player && gb[2][0] === player) {
+      markWinLeftVert();
       return logScore();
     } else if (gb[0][1] === player && gb[1][1] === player && gb[2][1] === player) {
+      markWinMidVert();
       return logScore();
     } else if (gb[0][2] === player && gb[1][2] === player && gb[2][2] === player) {
+      markWinRightVert();
       return logScore();
     } else if (gb[0][0] === player && gb[0][1] === player && gb[0][2] === player) {
+      markWinTopHor();
       return logScore();
     } else if (gb[1][0] === player && gb[1][1] === player && gb[1][2] === player) {
+      markWinMidHor();
       return logScore();
     } else if (gb[2][0] === player && gb[2][1] === player && gb[2][2] === player) {
-      return logScore();
-    } else if (gb[0][2] === player && gb[1][1] === player && gb[2][0] === player) {
+      markWinLowHor();
       return logScore();
     } else if (gb[0][0] === player && gb[1][1] === player && gb[2][2] === player) {
+      markWinDiagTL2LR();
+      return logScore();
+    } else if (gb[0][2] === player && gb[1][1] === player && gb[2][0] === player) {
+      markWinDiagTR2LL();
       return logScore();
     } else {
       if (checkDraw()) {
