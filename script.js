@@ -30,11 +30,13 @@ const gameboard = (function() {
 
 
 function createGame() {
-  let markSelector = 1;
+  let markCounter = 1;
   function checkWin(player) {
+    
     const gb = gameboard.row;
     const logScore = () => {
       console.log(`${player} wins!`);
+      container.classList.add("inert");
       return true;
     };
     
@@ -44,6 +46,7 @@ function createGame() {
   
     const logDraw = () => {
       console.log("It's a draw!");
+      container.classList.add("inert");
       return true;
     }
   
@@ -70,7 +73,7 @@ function createGame() {
       return false;
     }
   }
-  return { checkWin, markSelector };
+  return { checkWin, markCounter };
 }
 
 container.addEventListener("click", function(e) {
@@ -85,13 +88,13 @@ container.addEventListener("click", function(e) {
   console.log(targetCapitalized);
 
   if (typeof gameboard[targetCapitalized] === "function") {
-    if (game.markSelector % 2 === 1) {
+    if (game.markCounter % 2 === 1) {
       gameboard[targetCapitalized](x);
-      game.markSelector++;
+      game.markCounter++;
       drawMark(x);
-    } else if (game.markSelector % 2 === 0) {
+    } else if (game.markCounter % 2 === 0) {
       gameboard[targetCapitalized](o);
-      game.markSelector++;
+      game.markCounter++;
       drawMark(o);
     }
   } else {
