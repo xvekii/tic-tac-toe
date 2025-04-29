@@ -107,7 +107,11 @@ container.addEventListener("click", function(e) {
   const x = "x";
   const o = "o";
   let target = e.target;
-  if (!target.classList.contains("field")) return;
+  
+  if (!target.classList.contains("field") || target.firstChild) {
+    return;
+  }
+
   let targetSplit = target.classList[0].split("-");
   let targetCapitalized = "set" +
                           targetSplit[0].charAt(0).toUpperCase() + targetSplit[0].slice(1) + 
@@ -135,7 +139,6 @@ container.addEventListener("click", function(e) {
     gameboard.printBoard();
     game.checkWin(mark);
   } 
-  
 });
 
 const game = createGame();
