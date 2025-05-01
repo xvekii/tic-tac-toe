@@ -9,6 +9,25 @@
 </head>
 <body>
   <div class="wrapper">
+    <dialog id="dialog">
+      <form id="player-names-form">
+        <fieldset>
+          <legend>Enter player names</legend>
+          <p class="form-p">
+            <label for="player1">Player 1</label>
+            <input type="text" id="player1" name="player1-name" required>
+          </p>
+          <p class="form-p">
+            <label for="player2">Player 2</label>
+            <input type="text" id="player2" name="player2-name" required>
+          </p>
+          <div class="add-players-btn-div">
+            <button class="skip-dialog-btn" type="button">Skip</button>
+            <button class="add-players-btn" type="submit">Add players</button>
+          </div>
+        </fieldset>
+      </form>
+    </dialog>
     <main class="fields-container">
       <div class="first-column">
         <div class="top-left field"></div>
