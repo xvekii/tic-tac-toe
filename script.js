@@ -8,6 +8,22 @@ const h2 = document.querySelectorAll(".mid-left, .mid-mid, .mid-right");
 const h3 = document.querySelectorAll(".low-left, .low-mid, .low-right");
 const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
 const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
+const dialog = document.getElementById("dialog");
+const form = document.getElementById("player-names-form");
+const addPlayersBtn = document.querySelector(".add-players-btn");
+const skipDialogBtn = document.querySelector(".skip-dialog-btn");
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("body-blocked-scrolling");
+  dialog.showModal();
+});
+
+skipDialogBtn.addEventListener("click", () => {
+  dialog.close();
+  document.body.classList.remove("body-blocked-scrolling");
+  form.reset();
+});
 
 const gameboard = (function() {
   const row = [
@@ -36,7 +52,6 @@ const gameboard = (function() {
     setLowLeft, setLowMid, setLowRight, 
   };
 })();
-
 
 function createGame() {
   let markCounter = 1;
@@ -68,7 +83,6 @@ function createGame() {
     const markWinDiagTL2LR = () => d1.forEach(e => e.classList.add("win"));
     const markWinDiagTR2LL = () => d2.forEach(e => e.classList.add("win"));
     
-  
     if (gb[0][0] === player && gb[1][0] === player && gb[2][0] === player) {
       markWinLeftVert();
       return logScore();
