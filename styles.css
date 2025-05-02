@@ -119,6 +119,7 @@ button {
   width: 500px;  
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .field {
@@ -182,6 +183,13 @@ button {
 
 .x::after {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.result {
+  position: absolute;
+  top: 580px;
+  color: white;
+  font-size: 0.6em;
 }
 
 .inert {
