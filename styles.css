@@ -47,7 +47,7 @@ dialog {
   border-radius: 1rem;
   width: 13%;
   min-width: 293px;
-  background-color: #4a4e69;
+  background-color: #36394f;
 }
 
 dialog::backdrop {
@@ -71,11 +71,10 @@ legend {
   text-align: center;
   color: #e8d5ff;
   font-weight: bolder;
-  background: #4a4e69;
-  font-size: 1.2rem;
+  background: #36394f;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
 }
-
 
 .form-p {
   display: grid;
@@ -84,7 +83,7 @@ legend {
 }
 
 input {
-  font: 1rem sans-serif;
+  font: 1.3rem sans-serif;
   width: 100%;
   max-width: 100%;
   border: 2px solid #000000;
@@ -102,8 +101,8 @@ label {
   display: inline-block;
   width: 150px;
   text-align: left;
-  font-size: 0.7rem;
-  color: #efefef;
+  font-size: 1rem;
+  color: #e8d5ff;
   padding-bottom: 1px;
 }
 
