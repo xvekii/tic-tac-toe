@@ -10,7 +10,6 @@ const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
 const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
 const dialog = document.getElementById("dialog");
 const form = document.getElementById("player-names-form");
-const addPlayersBtn = document.querySelector(".add-players-btn");
 const skipDialogBtn = document.querySelector(".skip-dialog-btn");
 
 
@@ -24,6 +23,35 @@ skipDialogBtn.addEventListener("click", () => {
   document.body.classList.remove("body-blocked-scrolling");
   form.reset();
 });
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+  processFormData();
+  form.reset();
+  dialog.close();
+});
+
+function processFormData() {
+  const player1 = document.getElementById("player1").value;
+  const player2 = document.getElementById("player2").value;
+
+  addPlayers(player1, player2);
+}
+
+skipDialogBtn.addEventListener("click", () => {
+  const player1 = "Player1";
+  const player2 = "Player1";
+  
+  addPlayers(player1, player2);
+  dialog.close();
+});
+
+function addPlayers(name1, name2) {
+  const player1 = name1;
+  const player2 = name2;
+  
+  return { player1, player2 };
+}
 
 const gameboard = (function() {
   const row = [
