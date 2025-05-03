@@ -152,14 +152,14 @@ button {
 }
 
 .o {
-  width: 115px;
-  height: 115px;
+  width: 2.2em;
+  height: 2.2em;
   border-radius: 50%;
   border: 18px solid #7EDA25;
 }
 
 .x {
-  height: 135px;
+  height: 2.8em;
   position: relative;
   border-radius: 5px;
 }
