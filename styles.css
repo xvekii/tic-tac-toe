@@ -214,13 +214,17 @@ button {
   display: flex;
   align-items: center;
   gap: 1em;
+  height: 5rem;
 }
 
 .pl1-icon-div,
 .pl2-icon-div {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
+  min-height: 3em;
+  min-width: 5em;
 }
 
 .pl1-icon-div > img,
@@ -230,10 +234,10 @@ button {
 }
 
 .pl1-score, .pl2-score {
-  font-size: 2.5em;
+  font-size: 2.8em;
   font-weight: 700;
   color: #FFCC00;
-  border: 1px solid gold;
+  /* border: 1px solid gold; */
   width: 1.2em;
   font-family: monospace;
 }
@@ -253,4 +257,12 @@ button {
   align-items: center;
   font-size: 2.5em;
   color: #673AB7;
+}
+
+.pl1-name-span, 
+.pl2-name-span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1em;
 }
