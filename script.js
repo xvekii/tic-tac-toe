@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   dialog.showModal();
 });
 
-
 function addPlayers(name1, name2) {
   const player1name = name1;
   const player2name = name2;
@@ -26,8 +25,8 @@ function addPlayers(name1, name2) {
   let player1Pts = 0;
   let player2Pts = 0;
 
-  const addPlayer1Pts = () => player1Pts++;
-  const addPlayer2Pts = () => player2Pts++;
+  const addPlayer1Pts = () => ++player1Pts;
+  const addPlayer2Pts = () => ++player2Pts;
   const showPlayer1Pts = () => player1Pts;
   const showPlayer2Pts = () => player2Pts;
   
@@ -37,17 +36,22 @@ function addPlayers(name1, name2) {
 }
 
 skipDialogBtn.addEventListener("click", () => {
-  document.body.classList.remove("body-blocked-scrolling");
   gameController();
-  dialog.close();
   form.reset();
+  setTimeout(() => {
+    document.body.classList.remove("body-blocked-scrolling");
+    dialog.close();
+  }, 300);
 });
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
   gameController();
   form.reset();
-  dialog.close();
+  setTimeout(() => {
+    document.body.classList.remove("body-blocked-scrolling");
+    dialog.close();
+  }, 300);
 });
 
 const displayController = (function() {
@@ -56,6 +60,7 @@ const displayController = (function() {
   const pl1ScoreSpan = document.querySelector(".pl1-score");
   const pl2ScoreSpan = document.querySelector(".pl2-score");
   const displayStatus = document.querySelector(".display-status");
+  const fields = document.querySelectorAll(".field");
   
   const updatePlayer1Name = (text) => pl1NameSpan.textContent = text;
   const updatePlayer2Name = (text) => pl2NameSpan.textContent = text;
@@ -68,13 +73,35 @@ const displayController = (function() {
     pl2ScoreSpan.textContent = 0;
   }
 
-  const updateGameStatus = (message) => {
-    displayStatus.textContent = message;
+  const resetFields = () => {
+    fields.forEach(field => {
+      if (field.firstChild) {
+        field.removeChild(field.firstChild);
+        if (field.classList.contains("win")) {
+          field.classList.remove("win");
+        }
+      }
+    });
+  }
+  
+  const clearGameStatus = () => displayStatus.textContent = "";
+  
+  const updateGameStatus = (message, player, players) => {
+    if (message === "It's a draw!") {
+      displayStatus.textContent = message;
+    } else {
+      displayStatus.textContent = message;
+    const winningPlayer = player === "x" ? "player1" : "player2";
+    const newScore = winningPlayer === "player1" ? players.addPlayer1Pts() : players.addPlayer2Pts();
+    return winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
+    displayController.updatePlayer2Score(newScore);
+    }
   }
 
   return { updatePlayer1Name, updatePlayer2Name, 
     updatePlayer1Score, updatePlayer2Score, 
-    resetScores, updateGameStatus };
+    resetScores, updateGameStatus, 
+    resetFields, clearGameStatus };
 })();
 
 function gameController() {
@@ -127,7 +154,6 @@ function gameController() {
       const newDiv = document.createElement("div");
       newDiv.classList.add(mark);
       target.appendChild(newDiv);
-      gameboard.printBoard();
       game.checkWin(mark, players);
     } 
   });
@@ -139,7 +165,8 @@ const gameboard = (function() {
     ['', '', ''],
     ['', '', '']
   ];
-  const printBoard = () => row.forEach(item => console.log(item));
+
+  // const printBoard = () => row.forEach(item => console.log(item));
   // Top row
   const setTopLeft = (mark) => row[0][0] = mark;
   const setTopMid = (mark) => row[0][1] = mark;
@@ -152,12 +179,19 @@ const gameboard = (function() {
   const setLowLeft = (mark) => row[2][0] = mark;
   const setLowMid = (mark) => row[2][1] = mark;
   const setLowRight = (mark) => row[2][2] = mark;
+
+  const resetBoard = () => row.forEach(r => {
+    for (let i = 0; i < r.length; i++) {
+      r[i] = "";
+    }
+  });
   
   return { 
-    row, printBoard, 
+    row, 
     setTopLeft, setTopMid, setTopRight,
     setMidLeft, setMidMid, setMidRight,
     setLowLeft, setLowMid, setLowRight, 
+    resetBoard
   };
 })();
 
@@ -169,8 +203,8 @@ function createGame() {
     const logScore = () => {
       const msg = " wins!";
       const winMsg = player === "x" ? players.player1name + msg : players.player2name + msg;
-      displayController.updateGameStatus(winMsg);
-      container.classList.add("inert");
+      displayController.updateGameStatus(winMsg, player, players);
+      blockContainerTimedToggle();
       return true;
     };
     
@@ -180,7 +214,19 @@ function createGame() {
   
     const logDraw = () => {
       displayController.updateGameStatus("It's a draw!");
+      blockContainerTimedToggle();
+      return true;
+    }
+
+    const blockContainerTimedToggle = () => {
       container.classList.add("inert");
+      setTimeout(() => {
+        container.classList.remove("inert");
+        displayController.resetFields();
+        displayController.clearGameStatus();
+        gameboard.resetBoard();
+        console.log(gameboard.row);
+      }, 2000);
       return true;
     }
 
