@@ -18,39 +18,90 @@ document.addEventListener("DOMContentLoaded", () => {
   dialog.showModal();
 });
 
+
+function addPlayers(name1 = "Player1", name2 = "Player2") {
+  const player1name = name1;
+  const player2name = name2;
+
+  let player1Pts = 0;
+  let player2Pts = 0;
+
+  const addPlayer1Pts = () => player1Pts++;
+  const addPlayer2Pts = () => player2Pts++;
+  const showPlayer1Pts = () => player1Pts;
+  const showPlayer2Pts = () => player2Pts;
+  
+  return { player1name, player2name, 
+    addPlayer1Pts, addPlayer2Pts, 
+    showPlayer1Pts, showPlayer2Pts };
+}
+
 skipDialogBtn.addEventListener("click", () => {
-  dialog.close();
   document.body.classList.remove("body-blocked-scrolling");
+  gameController();
+  dialog.close();
   form.reset();
 });
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
-  processFormData();
+  gameController();
   form.reset();
   dialog.close();
 });
 
-function processFormData() {
-  const player1 = document.getElementById("player1").value;
-  const player2 = document.getElementById("player2").value;
 
-  addPlayers(player1, player2);
-}
-
-skipDialogBtn.addEventListener("click", () => {
-  const player1 = "Player1";
-  const player2 = "Player1";
+function gameController() {
+  const game = createGame();
   
-  addPlayers(player1, player2);
-  dialog.close();
-});
-
-function addPlayers(name1, name2) {
-  const player1 = name1;
-  const player2 = name2;
+  function processFormData() {
+    const player1 = document.getElementById("player1").value;
+    const player2 = document.getElementById("player2").value;
   
-  return { player1, player2 };
+    return { player1, player2 };
+  }
+
+  const { player1, player2 } = processFormData();
+  const players = addPlayers(player1, player2);
+  
+
+  container.addEventListener("click", function(e) {
+    const x = "x";
+    const o = "o";
+    let target = e.target;
+    
+    if (!target.classList.contains("field") || target.firstChild) {
+      return;
+    }
+  
+    let targetSplit = target.classList[0].split("-");
+    let targetCapitalized = "set" +
+                            targetSplit[0].charAt(0).toUpperCase() + targetSplit[0].slice(1) + 
+                            targetSplit[1].charAt(0).toUpperCase() + targetSplit[1].slice(1);
+    console.log(targetCapitalized);
+  
+    if (typeof gameboard[targetCapitalized] === "function") {
+      if (game.markCounter % 2 === 1) {
+        gameboard[targetCapitalized](x);
+        game.markCounter++;
+        drawMark(x);
+      } else if (game.markCounter % 2 === 0) {
+        gameboard[targetCapitalized](o);
+        game.markCounter++;
+        drawMark(o);
+      }
+    } else {
+      console.error(`Method ${targetCapitalized} does not exist on gameboard.`);
+    }
+    
+    function drawMark(mark) {
+      const newDiv = document.createElement("div");
+      newDiv.classList.add(mark);
+      target.appendChild(newDiv);
+      gameboard.printBoard();
+      game.checkWin(mark);
+    } 
+  });
 }
 
 const gameboard = (function() {
@@ -84,8 +135,8 @@ const gameboard = (function() {
 function createGame() {
   let markCounter = 1;
   function checkWin(player) {
-    
     const gb = gameboard.row;
+    
     const logScore = () => {
       console.log(`${player} wins!`);
       container.classList.add("inert");
@@ -144,43 +195,3 @@ function createGame() {
   }
   return { checkWin, markCounter };
 }
-
-container.addEventListener("click", function(e) {
-  const x = "x";
-  const o = "o";
-  let target = e.target;
-  
-  if (!target.classList.contains("field") || target.firstChild) {
-    return;
-  }
-
-  let targetSplit = target.classList[0].split("-");
-  let targetCapitalized = "set" +
-                          targetSplit[0].charAt(0).toUpperCase() + targetSplit[0].slice(1) + 
-                          targetSplit[1].charAt(0).toUpperCase() + targetSplit[1].slice(1);
-  console.log(targetCapitalized);
-
-  if (typeof gameboard[targetCapitalized] === "function") {
-    if (game.markCounter % 2 === 1) {
-      gameboard[targetCapitalized](x);
-      game.markCounter++;
-      drawMark(x);
-    } else if (game.markCounter % 2 === 0) {
-      gameboard[targetCapitalized](o);
-      game.markCounter++;
-      drawMark(o);
-    }
-  } else {
-    console.error(`Method ${targetCapitalized} does not exist on gameboard.`);
-  }
-  
-  function drawMark(mark) {
-    const newDiv = document.createElement("div");
-    newDiv.classList.add(mark);
-    target.appendChild(newDiv);
-    gameboard.printBoard();
-    game.checkWin(mark);
-  } 
-});
-
-const game = createGame();
