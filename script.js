@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function addPlayers(name1 = "Player1", name2 = "Player2") {
+function addPlayers(name1, name2) {
   const player1name = name1;
   const player2name = name2;
 
@@ -50,20 +50,49 @@ form.addEventListener("submit", function(e) {
   dialog.close();
 });
 
+const displayController = (function() {
+  const pl1NameSpan = document.querySelector(".pl1-name-span");
+  const pl2NameSpan = document.querySelector(".pl2-name-span");
+  const pl1ScoreSpan = document.querySelector(".pl1-score");
+  const pl2ScoreSpan = document.querySelector(".pl2-score");
+  const displayStatus = document.querySelector(".display-status");
+  
+  const updatePlayer1Name = (text) => pl1NameSpan.textContent = text;
+  const updatePlayer2Name = (text) => pl2NameSpan.textContent = text;
+  
+  const updatePlayer1Score = (score) => pl1ScoreSpan.textContent = score;
+  const updatePlayer2Score = (score) => pl2ScoreSpan.textContent = score;
+
+  const resetScores = () => {
+    pl1ScoreSpan.textContent = 0;
+    pl2ScoreSpan.textContent = 0;
+  }
+
+  const updateGameStatus = (message) => {
+    displayStatus.textContent = message;
+  }
+
+  return { updatePlayer1Name, updatePlayer2Name, 
+    updatePlayer1Score, updatePlayer2Score, 
+    resetScores, updateGameStatus };
+})();
 
 function gameController() {
   const game = createGame();
   
   function processFormData() {
-    const player1 = document.getElementById("player1").value;
-    const player2 = document.getElementById("player2").value;
+    const player1 = document.getElementById("player1").value.trim() || "Player 1";
+    const player2 = document.getElementById("player2").value.trim() || "Player 2";
   
     return { player1, player2 };
   }
 
   const { player1, player2 } = processFormData();
   const players = addPlayers(player1, player2);
+  displayController.updatePlayer1Name(players.player1name);
+  displayController.updatePlayer2Name(players.player2name);
   
+  displayController.resetScores();
 
   container.addEventListener("click", function(e) {
     const x = "x";
@@ -99,7 +128,7 @@ function gameController() {
       newDiv.classList.add(mark);
       target.appendChild(newDiv);
       gameboard.printBoard();
-      game.checkWin(mark);
+      game.checkWin(mark, players);
     } 
   });
 }
@@ -134,11 +163,13 @@ const gameboard = (function() {
 
 function createGame() {
   let markCounter = 1;
-  function checkWin(player) {
+  function checkWin(player, players) {
     const gb = gameboard.row;
     
     const logScore = () => {
-      console.log(`${player} wins!`);
+      const msg = " wins!";
+      const winMsg = player === "x" ? players.player1name + msg : players.player2name + msg;
+      displayController.updateGameStatus(winMsg);
       container.classList.add("inert");
       return true;
     };
@@ -148,7 +179,7 @@ function createGame() {
     };
   
     const logDraw = () => {
-      console.log("It's a draw!");
+      displayController.updateGameStatus("It's a draw!");
       container.classList.add("inert");
       return true;
     }
