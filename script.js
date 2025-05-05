@@ -8,14 +8,15 @@ const h2 = document.querySelectorAll(".mid-left, .mid-mid, .mid-right");
 const h3 = document.querySelectorAll(".low-left, .low-mid, .low-right");
 const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
 const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
-const dialog = document.getElementById("dialog");
+const addPlayersDialog = document.getElementById("dialog");
+const gameOverDialog = document.getElementById("game-over-dialog");
 const form = document.getElementById("player-names-form");
 const skipDialogBtn = document.querySelector(".skip-dialog-btn");
 
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("body-blocked-scrolling");
-  dialog.showModal();
+  addPlayersDialog.showModal();
 });
 
 function addPlayers(name1, name2) {
@@ -40,7 +41,7 @@ skipDialogBtn.addEventListener("click", () => {
   form.reset();
   setTimeout(() => {
     document.body.classList.remove("body-blocked-scrolling");
-    dialog.close();
+    addPlayersDialog.close();
   }, 300);
 });
 
@@ -50,7 +51,7 @@ form.addEventListener("submit", function(e) {
   form.reset();
   setTimeout(() => {
     document.body.classList.remove("body-blocked-scrolling");
-    dialog.close();
+    addPlayersDialog.close();
   }, 300);
 });
 
@@ -91,10 +92,23 @@ const displayController = (function() {
       displayStatus.textContent = message;
     } else {
       displayStatus.textContent = message;
-    const winningPlayer = player === "x" ? "player1" : "player2";
-    const newScore = winningPlayer === "player1" ? players.addPlayer1Pts() : players.addPlayer2Pts();
-    return winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
-    displayController.updatePlayer2Score(newScore);
+      const winningPlayer = player === "x" ? "player1" : "player2";
+      const newScore = winningPlayer === "player1" ? players.addPlayer1Pts() : 
+      players.addPlayer2Pts();
+      
+      if (newScore === 1) {
+        // Game status = game over
+        winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
+        displayController.updatePlayer2Score(newScore);
+        displayStatus.textContent = "Game over!";
+        // Open game over dialog - new gameOver funct
+        gameOverDialog.showModal();
+        // Clear playerPts, gameboard.resetBoard(), resetDisplay;
+        // block scroll
+      } else {
+        winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
+        displayController.updatePlayer2Score(newScore);
+      }
     }
   }
 
