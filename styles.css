@@ -23,7 +23,7 @@ body {
   min-height: 100vh;
 }
 
-.wrapper, form {
+.wrapper, form, dialog {
   user-select: none;
 }
 
@@ -99,8 +99,9 @@ legend {
   color: #e8d5ff;
   font-weight: bolder;
   background: #36394f;
-  font-size: 1.3rem;
+  font-size: 0.5em;
   margin-bottom: 1rem;
+  text-shadow: 2px 2px 0px #dd0757;
 }
 
 .form-p {
@@ -119,9 +120,18 @@ input {
 }
 
 input:focus-visible {
-  border: 2px solid black;
-  border-radius: 3px;
+  outline: 2px solid #e8d5ff; 
+  outline-offset: 2px;
+}
+
+button:focus {
   outline: none;
+}
+
+button:focus-visible {
+  outline-offset: 3px;
+  outline: 2px solid #e8d5ff;
+  border-radius: 3px;
 }
 
 label {
@@ -170,7 +180,6 @@ button {
   border-radius: 4px;
   border: solid #9a8c98 2px;
   color: #ffffff;
-  outline: dashed #9E9E9E 1px;
   font-weight: 700;
 }
 
