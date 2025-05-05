@@ -31,10 +31,14 @@ function addPlayers(name1, name2) {
   const addPlayer2Pts = () => ++player2Pts;
   const showPlayer1Pts = () => player1Pts;
   const showPlayer2Pts = () => player2Pts;
+
+  const resetPlayer1Pts = () => player1Pts = 0;
+  const resetPlayer2Pts = () => player2Pts = 0;
   
   return { player1name, player2name, 
     addPlayer1Pts, addPlayer2Pts, 
-    showPlayer1Pts, showPlayer2Pts };
+    showPlayer1Pts, showPlayer2Pts,
+    resetPlayer1Pts, resetPlayer2Pts };
 }
 
 skipDialogBtn.addEventListener("click", () => {
@@ -57,8 +61,11 @@ form.addEventListener("submit", function(e) {
 });
 
 restartGameBtn.addEventListener("click", () => {
-  
-  gameOverDialog.close();
+  displayController.resetScores();
+  setTimeout(() => {
+    gameboard.unblockScrolling();
+    gameOverDialog.close();
+  }, 300);
 });
 
 const displayController = (function() {
@@ -95,9 +102,17 @@ const displayController = (function() {
     });
   }
   
-  clearGameStatus = () => displayStatus.textContent = "";
+  const clearGameStatus = () => displayStatus.textContent = "";
   
   const updateGameStatus = (message, player, players) => {
+        
+    const resetPlayerPts = () => {
+      players.resetPlayer1Pts();
+      players.resetPlayer2Pts();
+    }
+
+    const updateStatusMsg = (msg) => displayStatus.textContent = msg;
+    
     const showGameOverScore = () => {
       if (pl1GameOverName && pl2GameOverName && gameOverDialog) {
         pl1GameOverName.textContent = players.player1name + ":";
@@ -108,23 +123,25 @@ const displayController = (function() {
     }
     
     if (message === "It's a draw!") {
-      displayStatus.textContent = message;
+      updateStatusMsg(message);
     } else {
-      displayStatus.textContent = message;
+      updateStatusMsg(message);
       const winningPlayer = player === "x" ? "player1" : "player2";
       const newScore = winningPlayer === "player1" ? players.addPlayer1Pts() : 
       players.addPlayer2Pts();
       
       if (newScore === 1) {
-        // Game status = game over
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
         displayStatus.textContent = "Game over!";
         // GameOver funct
-        gameOverDialog.showModal();
+        setTimeout(() => {
+          gameOverDialog.showModal();
+        }, 1500);
+        
         showGameOverScore();
-        // Clear playerPts, gameboard.resetBoard(), resetDisplay;
-        // block scroll
+        resetPlayerPts();
+        gameboard.blockScrolling();
       } else {
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
@@ -138,16 +155,16 @@ const displayController = (function() {
     resetFields, clearGameStatus };
 })();
 
+function processFormData() {
+  const player1 = document.getElementById("player1").value.trim() || "Player 1";
+  const player2 = document.getElementById("player2").value.trim() || "Player 2";
+
+  return { player1, player2 };
+}
+
 function gameController() {
   const game = createGame();
   
-  function processFormData() {
-    const player1 = document.getElementById("player1").value.trim() || "Player 1";
-    const player2 = document.getElementById("player2").value.trim() || "Player 2";
-  
-    return { player1, player2 };
-  }
-
   const { player1, player2 } = processFormData();
   const players = addPlayers(player1, player2);
   displayController.updatePlayer1Name(players.player1name);
@@ -219,13 +236,35 @@ const gameboard = (function() {
       r[i] = "";
     }
   });
+
+  const blockScrolling = () => {
+    document.body.classList.add("body-blocked-scrolling");
+  }
+
+  const unblockScrolling = () => {
+    document.body.classList.remove("body-blocked-scrolling");
+  }
+
+  const blockContainerTimedToggle = () => {
+    container.classList.add("inert");
+    blockScrolling();
+    setTimeout(() => {
+      container.classList.remove("inert");
+      displayController.resetFields();
+      displayController.clearGameStatus();
+      gameboard.resetBoard();
+      console.log(gameboard.row);
+    }, 2000);
+    return true;
+  }
   
   return { 
     row, 
     setTopLeft, setTopMid, setTopRight,
     setMidLeft, setMidMid, setMidRight,
     setLowLeft, setLowMid, setLowRight, 
-    resetBoard
+    resetBoard, blockContainerTimedToggle,
+    blockScrolling,unblockScrolling
   };
 })();
 
@@ -238,7 +277,7 @@ function createGame() {
       const msg = " wins!";
       const winMsg = player === "x" ? players.player1name + msg : players.player2name + msg;
       displayController.updateGameStatus(winMsg, player, players);
-      blockContainerTimedToggle();
+      gameboard.blockContainerTimedToggle();
       return true;
     };
     
@@ -248,19 +287,7 @@ function createGame() {
   
     const logDraw = () => {
       displayController.updateGameStatus("It's a draw!");
-      blockContainerTimedToggle();
-      return true;
-    }
-
-    const blockContainerTimedToggle = () => {
-      container.classList.add("inert");
-      setTimeout(() => {
-        container.classList.remove("inert");
-        displayController.resetFields();
-        displayController.clearGameStatus();
-        gameboard.resetBoard();
-        console.log(gameboard.row);
-      }, 2000);
+      gameboard.blockContainerTimedToggle();
       return true;
     }
 
