@@ -12,6 +12,7 @@ const addPlayersDialog = document.getElementById("dialog");
 const gameOverDialog = document.getElementById("game-over-dialog");
 const form = document.getElementById("player-names-form");
 const skipDialogBtn = document.querySelector(".skip-dialog-btn");
+const restartGameBtn = document.querySelector(".restart-game-btn");
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -55,6 +56,11 @@ form.addEventListener("submit", function(e) {
   }, 300);
 });
 
+restartGameBtn.addEventListener("click", () => {
+  
+  gameOverDialog.close();
+});
+
 const displayController = (function() {
   const pl1NameSpan = document.querySelector(".pl1-name-span");
   const pl2NameSpan = document.querySelector(".pl2-name-span");
@@ -62,6 +68,10 @@ const displayController = (function() {
   const pl2ScoreSpan = document.querySelector(".pl2-score");
   const displayStatus = document.querySelector(".display-status");
   const fields = document.querySelectorAll(".field");
+  const pl1GameOverName = document.querySelector(".pl1-game-over-name");
+  const pl1GameOverScore = document.querySelector(".pl1-game-over-score");
+  const pl2GameOverName = document.querySelector(".pl2-game-over-name");
+  const pl2GameOverScore = document.querySelector(".pl2-game-over-score");
   
   const updatePlayer1Name = (text) => pl1NameSpan.textContent = text;
   const updatePlayer2Name = (text) => pl2NameSpan.textContent = text;
@@ -85,9 +95,18 @@ const displayController = (function() {
     });
   }
   
-  const clearGameStatus = () => displayStatus.textContent = "";
+  clearGameStatus = () => displayStatus.textContent = "";
   
   const updateGameStatus = (message, player, players) => {
+    const showGameOverScore = () => {
+      if (pl1GameOverName && pl2GameOverName && gameOverDialog) {
+        pl1GameOverName.textContent = players.player1name + ":";
+        pl1GameOverScore.textContent = players.showPlayer1Pts();
+        pl2GameOverName.textContent = players.player2name + ":";
+        pl2GameOverScore.textContent = players.showPlayer2Pts();
+      }
+    }
+    
     if (message === "It's a draw!") {
       displayStatus.textContent = message;
     } else {
@@ -101,8 +120,9 @@ const displayController = (function() {
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
         displayStatus.textContent = "Game over!";
-        // Open game over dialog - new gameOver funct
+        // GameOver funct
         gameOverDialog.showModal();
+        showGameOverScore();
         // Clear playerPts, gameboard.resetBoard(), resetDisplay;
         // block scroll
       } else {
