@@ -39,12 +39,47 @@ dialog::backdrop {
   opacity: .7;
 }
 
+.pl1-game-over-wrapper {
+  margin-bottom: 0;
+}
+
+.pl2-game-over-wrapper {
+  margin-top: 0.6em;
+}
+
+.game-over-wrapper,
+.pl1-game-over-wrapper,
+.pl2-game-over-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .game-over-h3 {
   font-size: 0.8em;
   color: #f8e800;
   text-align: center;
-  margin-top: 0;
+  margin: 0;
   text-shadow: 2px 2px 0px #dd0757;
+}
+
+.display-game-over-score {
+  color: white;
+  font-size: 0.5em;
+  margin: 2em 0;
+}
+
+.pl1-game-over-name, .pl2-game-over-name {
+  margin-right: 1em;
+  color: #00BCD4;
+  font-weight: 700;
+  text-shadow: 2px 2px 0px black;
+}
+
+.pl1-game-over-score,
+.pl2-game-over-score {
+  font-weight: 700;
+  text-shadow: 2px 2px 0px black;
 }
 
 form {
