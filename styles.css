@@ -34,6 +34,7 @@ dialog {
   min-width: 293px;
   background-color: #36394f;
   margin-top: 200px;
+  padding: 20px;
 }
 
 dialog::backdrop {
@@ -101,7 +102,7 @@ legend {
   color: #e8d5ff;
   font-weight: bolder;
   background: #36394f;
-  font-size: 0.7em;
+  font-size: 1.2rem;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 0px #dd0757;
 }
@@ -163,26 +164,47 @@ label {
   border: solid #3decf0 2px;
 }
 
-button {
-  cursor: pointer;
-}
-
 .add-players-btn {
   background-color: #6724da;
+}
+
+.add-players-btn:active {
+  background-color: #1EE9A4;
+  color: rgb(0, 0, 0);
+  border: solid #3F51B5  2px;
+  outline: 2px solid #e8d5ff;
+  outline-offset: 2px;
 }
 
 .skip-dialog-btn {
   background-color: #00000075;
 }
 
-.add-players-btn, 
-.skip-dialog-btn,
-.restart-game-btn {
-  padding: 7px 12px;
+.skip-dialog-btn:active {
+  background-color: #E91E63;
+  color:rgb(0, 0, 0);
+  border: solid #3F51B5  2px;
+  outline: 2px solid #e8d5ff; 
+  outline-offset: 2px;
+}
+
+.restart-game-btn:active {
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  outline: 2px solid #e8d5ff;
+  outline-offset: 2px;
+  box-shadow: 2px 2px 0 #3decf0;
+  border: solid #F8008C 2px;
+}
+
+.add-players-btn, .skip-dialog-btn, .restart-game-btn {
+  padding: 0.6em 1em;
   border-radius: 4px;
   border: solid #9a8c98 2px;
   color: #ffffff;
   font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .fields-container {
@@ -270,13 +292,14 @@ button {
   position: absolute;
   top: 510px;
   color: rgba(232, 213, 255, 0.48);
-  font-size: 0.6em;
+  font-size: 0.5em;
 }
 
 .display-status {
   color: #E8D5FF;
   position: absolute;
   top: 470px;
+  /* font-size: 0.8em; */
 }
 
 .inert {
@@ -339,4 +362,48 @@ button {
   justify-content: center;
   align-items: center;
   height: 1em;
+}
+
+@media (min-width: 755px) {
+  body {
+    font-size: 50px;
+  }
+
+  .wrapper {
+    margin-top: 130px;
+  }
+
+  dialog {
+    width: 18%;
+    margin-top: 300px
+  }
+
+  legend {
+    font-size: 1.6rem;
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+
+  .add-players-btn, .skip-dialog-btn, .restart-game-btn {
+    padding: 0.4em 0.9em;
+    font-size: 1rem;
+  }
+
+  .display-status {
+    top: 652px;
+  }
+
+  .display-score {
+    top: 730px;
+  }
+
+  .display-game-over-score {
+    font-size: 1.4rem;
+  }
+
+  .game-over-h3 {
+    font-size: 2.1rem;
+  }
 }
