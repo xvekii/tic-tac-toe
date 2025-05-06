@@ -4,7 +4,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 42px;
+  font-size: 30px;
   background: black;
   overflow-x: hidden;
   margin-right: calc(-1 * (100vw - 100%));
@@ -32,6 +32,7 @@ dialog {
   width: 13%;
   min-width: 293px;
   background-color: #36394f;
+  margin-top: 200px;
 }
 
 dialog::backdrop {
@@ -184,11 +185,20 @@ button {
 }
 
 .fields-container {
-  display: flex;
   width: 500px;  
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+.fields-container, 
+.display-score {
+  display: none;
+}
+
+.fields-container.active, 
+.display-score.active {
+  display: flex;
 }
 
 .field {
@@ -255,7 +265,6 @@ button {
 }
 
 .display-score {
-  display: flex;
   gap: 0.4em;
   position: absolute;
   top: 620px;
