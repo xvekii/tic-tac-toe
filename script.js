@@ -14,7 +14,6 @@ const form = document.getElementById("player-names-form");
 const skipDialogBtn = document.querySelector(".skip-dialog-btn");
 const restartGameBtn = document.querySelector(".restart-game-btn");
 
-
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("body-blocked-scrolling");
   addPlayersDialog.showModal();
@@ -42,8 +41,9 @@ function addPlayers(name1, name2) {
 }
 
 skipDialogBtn.addEventListener("click", () => {
-  gameController();
   form.reset();
+  gameController();
+  displayController.showGameboard();
   setTimeout(() => {
     document.body.classList.remove("body-blocked-scrolling");
     addPlayersDialog.close();
@@ -52,6 +52,7 @@ skipDialogBtn.addEventListener("click", () => {
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
+  displayController.showGameboard();
   gameController();
   form.reset();
   setTimeout(() => {
@@ -79,6 +80,13 @@ const displayController = (function() {
   const pl1GameOverScore = document.querySelector(".pl1-game-over-score");
   const pl2GameOverName = document.querySelector(".pl2-game-over-name");
   const pl2GameOverScore = document.querySelector(".pl2-game-over-score");
+  const fieldsContainer = document.querySelector('.fields-container');
+  const displayScore = document.querySelector('.display-score');
+
+  const showGameboard = () => {
+    fieldsContainer.classList.add('active');
+    displayScore.classList.add('active');
+  }
   
   const updatePlayer1Name = (text) => pl1NameSpan.textContent = text;
   const updatePlayer2Name = (text) => pl2NameSpan.textContent = text;
@@ -133,7 +141,7 @@ const displayController = (function() {
       if (newScore === 1) {
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
-        displayStatus.textContent = "Game over!";
+        displayStatus.textContent = message;
         // GameOver funct
         setTimeout(() => {
           gameOverDialog.showModal();
@@ -152,7 +160,7 @@ const displayController = (function() {
   return { updatePlayer1Name, updatePlayer2Name, 
     updatePlayer1Score, updatePlayer2Score, 
     resetScores, updateGameStatus, 
-    resetFields, clearGameStatus };
+    resetFields, clearGameStatus, showGameboard };
 })();
 
 function processFormData() {
@@ -185,7 +193,6 @@ function gameController() {
     let targetCapitalized = "set" +
                             targetSplit[0].charAt(0).toUpperCase() + targetSplit[0].slice(1) + 
                             targetSplit[1].charAt(0).toUpperCase() + targetSplit[1].slice(1);
-    console.log(targetCapitalized);
   
     if (typeof gameboard[targetCapitalized] === "function") {
       if (game.markCounter % 2 === 1) {
