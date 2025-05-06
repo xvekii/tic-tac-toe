@@ -8,6 +8,7 @@ body {
   background: black;
   overflow-x: hidden;
   margin-right: calc(-1 * (100vw - 100%));
+  line-height: 1.2;
 }
 
 .body-blocked-scrolling {
@@ -57,7 +58,7 @@ dialog::backdrop {
 }
 
 .game-over-h3 {
-  font-size: 0.8em;
+  font-size: 1.1em;
   color: #f8e800;
   text-align: center;
   margin: 0;
@@ -66,8 +67,8 @@ dialog::backdrop {
 
 .display-game-over-score {
   color: white;
-  font-size: 0.5em;
-  margin: 2em 0;
+  font-size: 0.7em;
+  margin: 1.5em 0;
 }
 
 .pl1-game-over-name, .pl2-game-over-name {
@@ -267,7 +268,7 @@ button {
 .display-score {
   gap: 0.4em;
   position: absolute;
-  top: 620px;
+  top: 510px;
   color: rgba(232, 213, 255, 0.48);
   font-size: 0.6em;
 }
@@ -275,7 +276,7 @@ button {
 .display-status {
   color: #E8D5FF;
   position: absolute;
-  top: 550px;
+  top: 470px;
 }
 
 .inert {
@@ -313,20 +314,16 @@ button {
 .pl1-score, .pl2-score {
   font-size: 2.8em;
   font-weight: 700;
-  color: #FFCC00;
-  /* border: 1px solid gold; */
-  width: 1.2em;
+  color: #FFCC00;  
   font-family: monospace;
 }
 
 .pl1-score {
-  display: flex;
-  justify-content: right;
+  margin-left: 0.4em;
 }
 
 .pl2-score {
-  display: flex;
-  justify-content: left;
+  margin-right: 0.4em;
 }
 
 .score-separator {
