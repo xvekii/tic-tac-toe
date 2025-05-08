@@ -80,8 +80,10 @@ const displayController = (function() {
   const pl1GameOverScore = document.querySelector(".pl1-game-over-score");
   const pl2GameOverName = document.querySelector(".pl2-game-over-name");
   const pl2GameOverScore = document.querySelector(".pl2-game-over-score");
-  const fieldsContainer = document.querySelector('.fields-container');
-  const displayScore = document.querySelector('.display-score');
+  const fieldsContainer = document.querySelector(".fields-container");
+  const displayScore = document.querySelector(".display-score");
+  const player1IconDiv = document.querySelector(".pl1-icon-div");
+  const player2IconDiv = document.querySelector(".pl2-icon-div");
 
   const showGameboard = () => {
     fieldsContainer.classList.add('active');
@@ -112,8 +114,18 @@ const displayController = (function() {
   
   const clearGameStatus = () => displayStatus.textContent = "";
   
-  const updateGameStatus = (message, player, players) => {
-        
+  const markCurrentPlayer = (playerNum) => {
+    setTimeout(() => {
+      const playerIconDiv = playerNum === 1 ? player1IconDiv : player2IconDiv;
+      playerIconDiv.classList.add("player-active");
+    }, 100);
+  }
+  const unmarkCurrentPlayer = (playerNum) => {
+    const playerIconDiv = playerNum === 1 ? player1IconDiv : player2IconDiv;
+    playerIconDiv.classList.remove("player-active");
+  }
+  
+  const updateGameStatus = (message, player, players) => {  
     const resetPlayerPts = () => {
       players.resetPlayer1Pts();
       players.resetPlayer2Pts();
@@ -138,7 +150,7 @@ const displayController = (function() {
       const newScore = winningPlayer === "player1" ? players.addPlayer1Pts() : 
       players.addPlayer2Pts();
       
-      if (newScore === 1) {
+      if (newScore === 5) {
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
         displayStatus.textContent = message;
@@ -156,30 +168,24 @@ const displayController = (function() {
       }
     }
   }
-
-  return { updatePlayer1Name, updatePlayer2Name, 
+  return { markCurrentPlayer, unmarkCurrentPlayer,
+    updatePlayer1Name, updatePlayer2Name, 
     updatePlayer1Score, updatePlayer2Score, 
     resetScores, updateGameStatus, 
     resetFields, clearGameStatus, showGameboard };
 })();
 
-function processFormData() {
-  const player1 = document.getElementById("player1").value.trim() || "Player 1";
-  const player2 = document.getElementById("player2").value.trim() || "Player 2";
-
-  return { player1, player2 };
-}
 
 function gameController() {
   const game = createGame();
   
-  const { player1, player2 } = processFormData();
+  const { player1, player2 } = game.processFormData();
   const players = addPlayers(player1, player2);
   displayController.updatePlayer1Name(players.player1name);
   displayController.updatePlayer2Name(players.player2name);
-  
   displayController.resetScores();
-
+  displayController.markCurrentPlayer(1);
+  
   container.addEventListener("click", function(e) {
     const x = "x";
     const o = "o";
@@ -199,10 +205,15 @@ function gameController() {
         gameboard[targetCapitalized](x);
         game.markCounter++;
         drawMark(x);
+        displayController.unmarkCurrentPlayer(1);
+        displayController.markCurrentPlayer(2);
+        
       } else if (game.markCounter % 2 === 0) {
         gameboard[targetCapitalized](o);
         game.markCounter++;
         drawMark(o);
+        displayController.unmarkCurrentPlayer(2);
+        displayController.markCurrentPlayer(1);
       }
     } else {
       console.error(`Method ${targetCapitalized} does not exist on gameboard.`);
@@ -224,7 +235,6 @@ const gameboard = (function() {
     ['', '', '']
   ];
 
-  // const printBoard = () => row.forEach(item => console.log(item));
   // Top row
   const setTopLeft = (mark) => row[0][0] = mark;
   const setTopMid = (mark) => row[0][1] = mark;
@@ -276,6 +286,12 @@ const gameboard = (function() {
 })();
 
 function createGame() {
+  const processFormData = () => {
+    const player1 = document.getElementById("player1").value.trim() || "Player 1";
+    const player2 = document.getElementById("player2").value.trim() || "Player 2";
+    return { player1, player2 };
+  }
+  
   let markCounter = 1;
   function checkWin(player, players) {
     const gb = gameboard.row;
@@ -338,5 +354,5 @@ function createGame() {
       return false;
     }
   }
-  return { checkWin, markCounter };
+  return { checkWin, markCounter, processFormData };
 }
