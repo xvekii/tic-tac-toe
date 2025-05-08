@@ -72,6 +72,11 @@ dialog::backdrop {
   margin: 1.5em 0;
 }
 
+.pl1-name-span, .pl2-name-span {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
 .pl1-game-over-name, .pl2-game-over-name {
   margin-right: 1em;
   color: #00BCD4;
@@ -125,6 +130,11 @@ input {
 input:focus-visible {
   outline: 2px solid #e8d5ff; 
   outline-offset: 2px;
+}
+
+button {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 button:focus {
@@ -291,8 +301,13 @@ label {
   gap: 0.4em;
   position: absolute;
   top: 510px;
-  color: rgba(232, 213, 255, 0.48);
+  color: rgb(255 255 255 / 48%);
   font-size: 0.5em;
+}
+
+.player-active {
+  border-radius: 9px;
+  box-shadow: 3px 1px #9e9e9eb8;
 }
 
 .display-status {
@@ -318,14 +333,13 @@ label {
   height: 5rem;
 }
 
-.pl1-icon-div,
-.pl2-icon-div {
+.pl1-icon-div, .pl2-icon-div {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
-  min-height: 3em;
-  min-width: 4em;
+  padding: 0.6rem 0.7rem;
+  white-space: nowrap;
+  min-width: 5rem;
 }
 
 .pl1-icon-div > img,
@@ -361,12 +375,11 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1em;
 }
 
 @media (min-width: 755px) {
   body {
-    font-size: 50px;
+    font-size: 44px;
   }
 
   .wrapper {
@@ -374,7 +387,7 @@ label {
   }
 
   dialog {
-    width: 18%;
+    width: 15%;
     margin-top: 300px
   }
 
@@ -392,11 +405,12 @@ label {
   }
 
   .display-status {
-    top: 652px;
+    top: 592px;
+    font-size: 2.1rem;
   }
 
   .display-score {
-    top: 730px;
+    top: 635px;
   }
 
   .display-game-over-score {
@@ -405,5 +419,9 @@ label {
 
   .game-over-h3 {
     font-size: 2.1rem;
+  }
+
+  .pl1-name-span, .pl2-name-span {
+    font-size: 1.2rem;
   }
 }
