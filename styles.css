@@ -314,7 +314,7 @@ label {
   color: #E8D5FF;
   position: absolute;
   top: 470px;
-  /* font-size: 0.8em; */
+  font-size: 1.5rem;
 }
 
 .inert {
@@ -406,7 +406,7 @@ label {
 
   .display-status {
     top: 592px;
-    font-size: 2.1rem;
+    font-size: 1.8rem;
   }
 
   .display-score {
