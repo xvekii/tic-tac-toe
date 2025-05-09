@@ -1,13 +1,4 @@
 const container = document.querySelector(".fields-container");
-
-const v1 = document.querySelectorAll(".top-left, .mid-left, .low-left");
-const v2 = document.querySelectorAll(".top-mid, .mid-mid, .low-mid");
-const v3 = document.querySelectorAll(".top-right, .mid-right, .low-right");
-const h1 = document.querySelectorAll(".top-left, .top-mid, .top-right");
-const h2 = document.querySelectorAll(".mid-left, .mid-mid, .mid-right");
-const h3 = document.querySelectorAll(".low-left, .low-mid, .low-right");
-const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
-const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
 const addPlayersDialog = document.getElementById("dialog");
 const gameOverDialog = document.getElementById("game-over-dialog");
 const form = document.getElementById("player-names-form");
@@ -30,7 +21,6 @@ function addPlayers(name1, name2) {
   const addPlayer2Pts = () => ++player2Pts;
   const showPlayer1Pts = () => player1Pts;
   const showPlayer2Pts = () => player2Pts;
-
   const resetPlayer1Pts = () => player1Pts = 0;
   const resetPlayer2Pts = () => player2Pts = 0;
   
@@ -120,6 +110,7 @@ const displayController = (function() {
       playerIconDiv.classList.add("player-active");
     }, 100);
   }
+
   const unmarkCurrentPlayer = (playerNum) => {
     const playerIconDiv = playerNum === 1 ? player1IconDiv : player2IconDiv;
     playerIconDiv.classList.remove("player-active");
@@ -154,7 +145,7 @@ const displayController = (function() {
         winningPlayer === "player1" ? displayController.updatePlayer1Score(newScore) : 
         displayController.updatePlayer2Score(newScore);
         displayStatus.textContent = message;
-        // GameOver funct
+
         setTimeout(() => {
           gameOverDialog.showModal();
         }, 1500);
@@ -286,9 +277,18 @@ const gameboard = (function() {
 })();
 
 function createGame() {
+  const v1 = document.querySelectorAll(".top-left, .mid-left, .low-left");
+  const v2 = document.querySelectorAll(".top-mid, .mid-mid, .low-mid");
+  const v3 = document.querySelectorAll(".top-right, .mid-right, .low-right");
+  const h1 = document.querySelectorAll(".top-left, .top-mid, .top-right");
+  const h2 = document.querySelectorAll(".mid-left, .mid-mid, .mid-right");
+  const h3 = document.querySelectorAll(".low-left, .low-mid, .low-right");
+  const d1 = document.querySelectorAll(".top-left, .mid-mid, .low-right");
+  const d2 = document.querySelectorAll(".top-right, .mid-mid, .low-left");
+  
   const processFormData = () => {
-    const player1 = document.getElementById("player1").value.trim() || "Player 1";
-    const player2 = document.getElementById("player2").value.trim() || "Player 2";
+    const player1 = document.getElementById("player1").value.trim() || "Player X";
+    const player2 = document.getElementById("player2").value.trim() || "Player O";
     return { player1, player2 };
   }
   
