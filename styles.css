@@ -380,13 +380,8 @@ label {
     font-size: 44px;
   }
 
-  .wrapper {
-    margin-top: 130px;
-  }
-
   dialog {
     width: 15%;
-    margin-top: 300px
   }
 
   legend {
